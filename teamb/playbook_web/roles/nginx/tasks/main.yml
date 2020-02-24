@@ -1,0 +1,26 @@
+# Amazon
+- name: install nginx and modules
+  become: yes
+  yum: pkg={{item}} state=latest
+  with_items:
+    - nginx
+    - nginx-mod-http-image-filter
+    - nginx-all-modules
+    - nginx-mod-http-xslt-filter
+    - nginx-mod-http-geoip
+    - nginx-mod-stream
+    - nginx-mod-http-perl
+    - nginx-mod-mail
+  notify:
+    - Start Nginx
+
+# index.html 변경
+- name: Create Page Change
+  become: yes
+  copy: 
+    src: /var/lib/jenkins/workspace/WEB_image/teamb/playbook_web/roles/nginx/webpages/index.html 
+    dest: /usr/share/nginx/html/index.html
+  notify:
+    - Reload Nginx
+
+

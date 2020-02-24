@@ -1,0 +1,35 @@
+# 패키지 업데이트 (Linux yum)
+- name: update yum packages
+  become: yes
+  yum: 
+    list: updates 
+    update_cache: true
+
+# 서울 시간 설정
+- name: set Asia/Seoul timezone
+  become: yes
+  timezone:
+    name: Asia/Seoul
+
+# Git 설치
+- name: install git
+  become: yes
+  yum:
+    name: git
+    state: latest
+
+# 사용되지 않는 패키지 삭제
+- name: remove unused yum packages -ntp
+  become: yes
+  yum:
+    name: ntp
+    state: absent
+
+# Amazon 시간 동기화
+- name: install chrony
+  become: yes
+  yum:
+    name: chrony
+    state: latest
+  notify:
+    - start chronyd

@@ -1,0 +1,5 @@
+- name: Build Amazon Linux Base Image (JDK8)
+  hosts: all
+  roles:
+    - common
+    - jdk8

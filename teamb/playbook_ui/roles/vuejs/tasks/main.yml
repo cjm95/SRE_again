@@ -1,0 +1,23 @@
+- name: Remove Node.js
+  become: yes
+  yum:
+    name: nodejs
+    state: absent
+
+- name: Install npm v10
+  become: yes
+  yum:
+    name: https://rpm.nodesource.com/pub_10.x/el/7/x86_64/nodejs-10.9.0-1nodesource.x86_64.rpm
+
+- name: Install optional
+  become: yes
+  yum:
+    name:
+    - gcc-c++
+    - make
+
+- name: Install @vue/cli
+  become: yes
+  npm:
+    name: "@vue/cli"
+    global: true

@@ -1,0 +1,29 @@
+- name: update yum packages
+  yum: 
+    list: updates 
+    update_cache: true
+
+- name: set Asia/Seoul timezone
+  become: yes
+  timezone:
+    name: Asia/Seoul
+
+- name: install git
+  become: yes
+  yum:
+    name: git
+    state: latest
+
+- name: remove unused yum packages -ntp
+  become: yes
+  yum:
+    name: ntp
+    state: absent
+
+- name: install chrony
+  become: yes
+  yum:
+    name: chrony
+    state: latest
+  notify:
+    - start chronyd

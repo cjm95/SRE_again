@@ -1,0 +1,5 @@
+- name: Build Amazon Linux Base Image (Vue.js)
+  hosts: all
+  roles:
+    - common
+    - vuejs

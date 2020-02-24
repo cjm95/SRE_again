@@ -1,0 +1,48 @@
+{
+    "_comment": "Web AMI using Amazon Linux",
+    "variables": {
+      "ami_name": "Web-base-ami {{timestamp}}",
+      "aws_access_key" : "{{env 'access_key'}}",
+      "aws_secret_key" : "{{env 'secret_key'}}"
+    },
+    "builders": [
+      {
+        "type": "amazon-ebs",
+        "access_key": "{{user `aws_access_key`}}",
+        "secret_key": "{{user `aws_secret_key`}}",
+        "region": "ap-northeast-2",
+        "source_ami": "ami-0ecd78c22823e02ef",
+        "vpc_id": "vpc-3a61a851",
+        "security_group_id": "sg-061968df73499d3e8",
+        "instance_type": "t2.micro",
+        "ssh_username": "ec2-user",
+        "ami_name": "{{user `ami_name`}}",
+        "ami_description": "Web with Amazon Linux",
+        "tags": {
+          "Name": "{{user `ami_name`}}",
+          "BaseAMI_Id": "{{ .SourceAMI }}",
+          "BaseAMI_Name": "{{ .SourceAMIName }}",
+          "image_visibility": "public",
+          "TEAM": "Auto TeamB"
+        }
+      }
+    ],
+    "provisioners": [
+      {
+        "type": "ansible",
+        
+        "playbook_file": "/var/lib/jenkins/workspace/WEB_image/teamb/playbook_web/web.yml"
+      }
+    ],
+	"post-processors": [
+		{
+		  "type": "manifest",
+		  "output": "/var/lib/jenkins/workspace/WEB_image/teamb/packer/ami_var/web/webbuild.json",
+		  "strip_path": true,
+		  "custom_data": {
+			"my_custom_data": "example"
+		  }
+		}
+	  ]
+  }
+  

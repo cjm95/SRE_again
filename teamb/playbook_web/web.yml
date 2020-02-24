@@ -1,0 +1,6 @@
+- name: Build Amazon Linux Base Image (Nginx)
+  hosts: all
+  roles:
+    - common
+    - nginx
+    

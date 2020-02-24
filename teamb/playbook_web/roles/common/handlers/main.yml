@@ -1,0 +1,26 @@
+- name: Start Nginx
+  become: yes
+  service: 
+    name: nginx 
+    enabled: yes 
+    state: started
+
+- name: Reload Nginx 
+  become: yes
+  service: 
+    name: nginx 
+    enabled: yes 
+    state: reloaded
+
+- name: Stop Nginx 
+  become: yes
+  service: 
+    name: nginx 
+    enabled: yes 
+    state: stoped
+
+- name: start chronyd
+  become: yes
+  service: 
+    name: chronyd 
+    enabled: yes
