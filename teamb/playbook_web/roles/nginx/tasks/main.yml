@@ -19,16 +19,9 @@
 # Ubuntu
 - name: install nginx and modules
   become: yes
-  apt: pkg={{item}} state=latest
-  with_items:
-    - nginx
-    - nginx-mod-http-image-filter
-    - nginx-all-modules
-    - nginx-mod-http-xslt-filter
-    - nginx-mod-http-geoip
-    - nginx-mod-stream
-    - nginx-mod-http-perl
-    - nginx-mod-mail
+  apt: 
+    name: nginx 
+    state: latest
   notify:
     - Start Nginx
   when:

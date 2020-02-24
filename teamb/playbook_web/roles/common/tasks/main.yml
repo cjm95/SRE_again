@@ -10,9 +10,8 @@
 # 패키지 업데이트 (Ubuntu apt)
 - name: update apt packages
   become: yes
-  apt: 
-    list: updates 
-    update_cache: true
+  apt:
+    upgrade: dist
   when:
     - ansible_facts['distribution'] == "Ubuntu"
 
