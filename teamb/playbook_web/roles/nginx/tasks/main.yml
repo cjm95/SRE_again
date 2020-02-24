@@ -1,5 +1,5 @@
 # Amazon
-- name: install nginx and modules
+- name: install nginx and modules in Linux
   become: yes
   yum: pkg={{item}} state=latest
   with_items:
@@ -17,11 +17,12 @@
     - ansible_facts['distribution'] == "Amazon"
 
 # Ubuntu
-- name: install nginx and modules
+- name: install nginx in Ubuntu
   become: yes
   apt: 
-    name: nginx
-    state: present
+    pkg: nginx
+    state: installed
+    update_cache: true
   notify:
     - Start Nginx
   when:
