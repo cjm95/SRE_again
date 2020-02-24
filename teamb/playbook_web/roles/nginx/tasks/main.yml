@@ -29,7 +29,7 @@
     - ansible_facts['distribution'] == "Ubuntu"
 
 
-# index.html 변경
+# index.html 변경 (Linux & Ubuntu 동일)
 - name: Create Page Change
   become: yes
   copy: 
@@ -37,5 +37,3 @@
     dest: /usr/share/nginx/html/index.html
   notify:
     - Reload Nginx
-  when:
-    - ansible_facts['distribution'] == "Amazon"
