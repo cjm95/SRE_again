@@ -3,7 +3,11 @@
     "variables": {
       "ami_name": "Web-base-ami {{timestamp}}",
       "aws_access_key" : "{{env 'access_key'}}",
-      "aws_secret_key" : "{{env 'secret_key'}}"
+      "aws_secret_key" : "{{env 'secret_key'}}",
+      "aws_source_ami_linux" : "ami-0ecd78c22823e02ef",
+      "aws_source_ami_ubuntu" : "ami-0cd7b0de75f5a35d1",
+      "linux_ssh_username" : "ec2-user",
+      "ubuntu_ssh_username" : "ubuntu"
     },
     "builders": [
       {
@@ -11,11 +15,11 @@
         "access_key": "{{user `aws_access_key`}}",
         "secret_key": "{{user `aws_secret_key`}}",
         "region": "ap-northeast-2",
-        "source_ami": "ami-0cd7b0de75f5a35d1",
+        "source_ami": "{{user `aws_source_ami_ubuntu`}}",
         "vpc_id": "vpc-3a61a851",
         "security_group_id": "sg-061968df73499d3e8",
         "instance_type": "t2.micro",
-        "ssh_username": "ubuntu",
+        "ssh_username": "{{user `ubuntu_ssh_username`}}",
         "ami_name": "{{user `ami_name`}}",
         "ami_description": "Web with Amazon Linux",
         "tags": {
