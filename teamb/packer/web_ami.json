@@ -11,7 +11,7 @@
         "access_key": "{{user `aws_access_key`}}",
         "secret_key": "{{user `aws_secret_key`}}",
         "region": "ap-northeast-2",
-        "source_ami": "ami-0ecd78c22823e02ef",
+        "source_ami": "ami-0cd7b0de75f5a35d1",
         "vpc_id": "vpc-3a61a851",
         "security_group_id": "sg-061968df73499d3e8",
         "instance_type": "t2.micro",
@@ -40,7 +40,7 @@
 		  "output": "/var/lib/jenkins/workspace/WEB_image/teamb/packer/ami_var/web/webbuild.json",
 		  "strip_path": true,
 		  "custom_data": {
-			"my_custom_data": "example"
+			"my_custom_data": "WEB AMI"
 		  }
 		}
 	  ]

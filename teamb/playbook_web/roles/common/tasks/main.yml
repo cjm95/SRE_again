@@ -4,6 +4,18 @@
   yum: 
     list: updates 
     update_cache: true
+  when:
+    - ansible_facts['distribution'] == "Amazon"
+
+# 패키지 업데이트 (Ubuntu apt)
+- name: update apt packages
+  become: yes
+  apt: 
+    list: updates 
+    update_cache: true
+  when:
+    - ansible_facts['distribution'] == "Ubuntu"
+
 
 # 서울 시간 설정
 - name: set Asia/Seoul timezone
@@ -11,12 +23,24 @@
   timezone:
     name: Asia/Seoul
 
-# Git 설치
+# Git 설치 리눅스
 - name: install git
   become: yes
   yum:
     name: git
     state: latest
+  when:
+    - ansible_facts['distribution'] == "Amazon"
+
+# Git 설치 우분투
+- name: install git
+  become: yes
+  apt:
+    name: git
+    state: latest
+  when:
+    - ansible_facts['distribution'] == "Ubuntu"
+  
 
 # 사용되지 않는 패키지 삭제
 - name: remove unused yum packages -ntp
@@ -24,8 +48,10 @@
   yum:
     name: ntp
     state: absent
+  when:
+    - ansible_facts['distribution'] == "Amazon"
 
-# Amazon 시간 동기화
+# Amazon 시간 동기화(리눅스)
 - name: install chrony
   become: yes
   yum:
@@ -33,3 +59,16 @@
     state: latest
   notify:
     - start chronyd
+  when:
+    - ansible_facts['distribution'] == "Amazon"
+
+# Amazon 시간 동기화 (우분투)
+- name: install chrony
+  become: yes
+  apt:
+    name: chrony
+    state: latest
+  notify:
+    - start chronyd
+  when:
+    - ansible_facts['distribution'] == "Ubuntu"

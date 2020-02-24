@@ -1,3 +1,4 @@
+# nginx 실행 handler
 - name: Start Nginx
   become: yes
   service: 
@@ -5,6 +6,7 @@
     enabled: yes 
     state: started
 
+# nginx 재실행 handler
 - name: Reload Nginx 
   become: yes
   service: 
@@ -12,15 +14,18 @@
     enabled: yes 
     state: reloaded
 
+# nginx 중지 handler
 - name: Stop Nginx 
   become: yes
   service: 
     name: nginx 
     enabled: yes 
     state: stoped
-
+    
+# chronyd 실행 handler
 - name: start chronyd
   become: yes
   service: 
     name: chronyd 
     enabled: yes
+    

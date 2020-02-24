@@ -13,6 +13,27 @@
     - nginx-mod-mail
   notify:
     - Start Nginx
+  when:
+    - ansible_facts['distribution'] == "Amazon"
+
+# Ubuntu
+- name: install nginx and modules
+  become: yes
+  apt: pkg={{item}} state=latest
+  with_items:
+    - nginx
+    - nginx-mod-http-image-filter
+    - nginx-all-modules
+    - nginx-mod-http-xslt-filter
+    - nginx-mod-http-geoip
+    - nginx-mod-stream
+    - nginx-mod-http-perl
+    - nginx-mod-mail
+  notify:
+    - Start Nginx
+  when:
+    - ansible_facts['distribution'] == "Ubuntu"
+
 
 # index.html 변경
 - name: Create Page Change
@@ -22,5 +43,5 @@
     dest: /usr/share/nginx/html/index.html
   notify:
     - Reload Nginx
-
-
+  when:
+    - ansible_facts['distribution'] == "Amazon"

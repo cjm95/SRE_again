@@ -39,7 +39,7 @@
       "output": "/var/lib/jenkins/workspace/API_image/teamb/packer/ami_var/api/apibuild.json",
       "strip_path": true,
       "custom_data": {
-        "my_custom_data": "example"
+        "my_custom_data": "API AMI"
       }
     }
   ]
