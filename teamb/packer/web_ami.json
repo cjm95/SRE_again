@@ -15,7 +15,7 @@
         "vpc_id": "vpc-3a61a851",
         "security_group_id": "sg-061968df73499d3e8",
         "instance_type": "t2.micro",
-        "ssh_username": "ec2-user",
+        "ssh_username": "ubuntu",
         "ami_name": "{{user `ami_name`}}",
         "ami_description": "Web with Amazon Linux",
         "tags": {
