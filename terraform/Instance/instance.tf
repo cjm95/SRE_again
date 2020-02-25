@@ -654,21 +654,21 @@ resource "aws_autoscaling_attachment" "asg_attachment_was2" {
 # Launch configuration #
 ########################
 resource "aws_launch_configuration" "alc_web1" {
-  image_id=var.image_id_web
+  image_id=var.web_ami_id
   instance_type="t2.micro"
   lifecycle{
     create_before_destroy=true
   }
 }
 resource "aws_launch_configuration" "alc_was1" {
-  image_id=var.image_id_was1
+  image_id=var.api_ami_id
   instance_type="t2.micro"
   lifecycle{
     create_before_destroy=true
   }
 }
 resource "aws_launch_configuration" "alc_was2" {
-  image_id=var.image_id_was2
+  image_id=var.ui_ami_id
   instance_type="t2.micro"
   lifecycle{
     create_before_destroy=true
