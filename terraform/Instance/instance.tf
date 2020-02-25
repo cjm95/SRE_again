@@ -243,56 +243,56 @@ resource "aws_security_group" "SRE_sg_rds" {
     }
 }
 
-resource "aws_network_acl" "SRE_ACL_Private" {
-  vpc_id = aws_vpc.SRE_vpc.id
-  subnet_ids = [aws_subnet.SRE_private1.id, aws_subnet.SRE_private2.id]
+# resource "aws_network_acl" "SRE_ACL_Private" {
+#   vpc_id = aws_vpc.SRE_vpc.id
+#   subnet_ids = [aws_subnet.SRE_private1.id, aws_subnet.SRE_private2.id]
 
-  egress {
-    protocol   = "tcp"
-    rule_no    = 200
-    action     = "allow"
-    cidr_block = "10.3.0.0/18"
-    from_port  = 443
-    to_port    = 443
-  }
+#   egress {
+#     protocol   = "tcp"
+#     rule_no    = 200
+#     action     = "allow"
+#     cidr_block = "10.3.0.0/18"
+#     from_port  = 443
+#     to_port    = 443
+#   }
 
-  ingress {
-    protocol   = "tcp"
-    rule_no    = 100
-    action     = "allow"
-    cidr_block = "10.10.0.0/16"
-    from_port  = 22
-    to_port    = 22
-  }
-ingress {
-    protocol   = "tcp"
-    rule_no    = 22
-    action     = "allow"
-    cidr_block = "10.10.1.98/32"
-    from_port  = 22
-    to_port    = 22
-  }
-  ingress {
-    protocol   = "tcp"
-    rule_no    = 1000
-    action     = "allow"
-    cidr_block = "10.10.1.98/32"
-    from_port  = 1024
-    to_port    = 65535
-  }
-  ingress { 
-    protocol   = "tcp"
-    rule_no    = 200
-    action     = "allow"
-    cidr_block = "10.10.0.0/16"
-    from_port  = 3306
-    to_port    = 3306
-  }
+#   ingress {
+#     protocol   = "tcp"
+#     rule_no    = 100
+#     action     = "allow"
+#     cidr_block = "10.10.0.0/16"
+#     from_port  = 22
+#     to_port    = 22
+#   }
+# ingress {
+#     protocol   = "tcp"
+#     rule_no    = 22
+#     action     = "allow"
+#     cidr_block = "10.10.1.98/32"
+#     from_port  = 22
+#     to_port    = 22
+#   }
+#   ingress {
+#     protocol   = "tcp"
+#     rule_no    = 1000
+#     action     = "allow"
+#     cidr_block = "10.10.1.98/32"
+#     from_port  = 1024
+#     to_port    = 65535
+#   }
+#   ingress { 
+#     protocol   = "tcp"
+#     rule_no    = 200
+#     action     = "allow"
+#     cidr_block = "10.10.0.0/16"
+#     from_port  = 3306
+#     to_port    = 3306
+#   }
 
-  tags = {
-    Name = "SRE_ACL_Private"
-  }
-}
+#   tags = {
+#     Name = "SRE_ACL_Private"
+#   }
+# }
 
 # resource "aws_db_subnet_group" "SRE_rds_sg" {
 #     name = "sre-db-sg"
