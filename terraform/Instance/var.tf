@@ -1,23 +1,3 @@
-variable "key_name" {
-    type    = string
-    default = "Auto-teamB-SRE"
-}
-variable "my_region" {
-    type    = string
-    default = "ap-northeast-2"
-}
-variable "my_az1" {
-    type    = string
-    default = "ap-northeast-2a"
-}
-variable "my_az2" {
-    type    = string
-    default = "ap-northeast-2c"
-}
-variable "db_username" {
-    default="root"
-    type    = string
-}
 variable "db_password" {
     type    = string
     description = "RDS DB instance password should be More than 8 letters."
@@ -32,6 +12,28 @@ variable "aws_secret_key" {
     type    = string
     default="{{aws_secret_key}}"
     description = "Your secret key"
+}
+# ======================================================================
+variable "key_name" {
+    type    = string
+    default = "Auto-teamB-SRE"
+}
+variable "my_region" {
+    type    = string
+    default = "ap-northeast-2"
+}
+
+variable "my_az1" {
+    type    = string
+    default = "ap-northeast-2a"
+}
+variable "my_az2" {
+    type    = string
+    default = "ap-northeast-2c"
+}
+variable "db_username" {
+    default="root"
+    type    = string
 }
 variable "web_ami_id" {
     type    = string
