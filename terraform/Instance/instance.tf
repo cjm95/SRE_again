@@ -3,7 +3,7 @@
 provider "aws" {
     profile ="aws_provider"
     region = var.my_region
-	access_key =var.aws_access_key
+	  access_key =var.aws_access_key
     secret_key = var.aws_secret_key
 
 }
@@ -378,7 +378,7 @@ resource "aws_instance" "SRE_was4" {
     tags = { Name = "SRE_was4"}
 }
 
-resource "aws_lb" "SRE_external" {
+resource "aws_lb" "SRE_web" {
   name            = "SREexternal"
   internal        = false
   idle_timeout    = "300"
@@ -392,7 +392,7 @@ resource "aws_lb" "SRE_external" {
   }
 }
 
-resource "aws_lb" "SRE_internal" {
+resource "aws_lb" "SRE_was" {
   name            = "SREinternal"
   internal        = true
   idle_timeout    = "300"
@@ -404,6 +404,32 @@ resource "aws_lb" "SRE_internal" {
   tags = {
     Name = "SRE_internal"
   }
+}
+resource "aws_lb_listener" "SRE_web" {
+  load_balancer_arn = "${aws_lb.SRE_web.arn}"
+  port              = "80"
+  protocol          = "HTTP"
+  # ssl_policy        = "ELBSecurityPolicy-2016-08"
+  # certificate_arn   = "arn:aws:iam::187416307283:server-certificate/test_cert_rab3wuqwgja25ct3n4jdj2tzu4"
+
+  default_action {
+    type             = "forward"
+    target_group_arn = "${aws_alb_target_group.SRE_web.arn}"
+  }
+
+}
+resource "aws_lb_listener" "SRE_was" {
+  load_balancer_arn = "${aws_lb.SRE_was.arn}"
+  port              = "8080"
+  protocol          = "HTTP"
+  # ssl_policy        = "ELBSecurityPolicy-2016-08"
+  # certificate_arn   = "arn:aws:iam::187416307283:server-certificate/test_cert_rab3wuqwgja25ct3n4jdj2tzu4"
+
+  default_action {
+    type             = "forward"
+    target_group_arn = "${aws_alb_target_group.SRE_was.arn}"
+  }
+
 }
 
 #  Security Group for ALB
@@ -492,7 +518,7 @@ resource "aws_alb_target_group" "SRE_web" {
   }
   tags = {Name   = "SRE_web" }
 }
-resource "aws_alb_target_group" "SRE_was1" {
+resource "aws_alb_target_group" "SRE_was" {
   name     = "SRE-was"
   port     = 8080
   protocol = "HTTP"
@@ -505,23 +531,23 @@ resource "aws_alb_target_group" "SRE_was1" {
     interval            = 30
     port                = 8080
   }
-  tags = {Name  = "SRE_was1"}
+  tags = {Name  = "SRE_was"}
 }
-resource "aws_alb_target_group" "SRE_was2" {
-  name     = "SRE-was"
-  port     = 8080
-  protocol = "HTTP"
-  vpc_id   = aws_vpc.SRE_vpc.id
- health_check {
-    healthy_threshold   = 5
-    unhealthy_threshold = 2
-    timeout             = 5
-    path                = var.target_group_path
-    interval            = 30
-    port                = 8080
-  }
-  tags = {Name  = "SRE_was2"}
-}
+# resource "aws_alb_target_group" "SRE_was2" {
+#   name     = "SRE-was"
+#   port     = 8080
+#   protocol = "HTTP"
+#   vpc_id   = aws_vpc.SRE_vpc.id
+#  health_check {
+#     healthy_threshold   = 5
+#     unhealthy_threshold = 2
+#     timeout             = 5
+#     path                = var.target_group_path
+#     interval            = 30
+#     port                = 8080
+#   }
+#   tags = {Name  = "SRE_was2"}
+# }
 
 ## alb에 instance 연결
 resource "aws_alb_target_group_attachment" "SRE_web1" {
@@ -535,25 +561,25 @@ resource "aws_alb_target_group_attachment" "SRE_web2" {
   port             = 80
 }
 resource "aws_alb_target_group_attachment" "SRE_was1" {
-  target_group_arn = aws_alb_target_group.SRE_was1.arn
+  target_group_arn = aws_alb_target_group.SRE_was.arn
   target_id        = aws_instance.SRE_was1.id
   port             = 8080
 }
 resource "aws_alb_target_group_attachment" "SRE_was2" {
-  target_group_arn = aws_alb_target_group.SRE_was1.arn
+  target_group_arn = aws_alb_target_group.SRE_was.arn
   target_id        = aws_instance.SRE_was2.id
   port             = 8080
 }
-resource "aws_alb_target_group_attachment" "SRE_was3" {
-  target_group_arn = aws_alb_target_group.SRE_was2.arn
-  target_id        = aws_instance.SRE_was3.id
-  port             = 8080
-}
-resource "aws_alb_target_group_attachment" "SRE_was4" {
-  target_group_arn = aws_alb_target_group.SRE_was2.arn
-  target_id        = aws_instance.SRE_was4.id
-  port             = 8080
-}
+# resource "aws_alb_target_group_attachment" "SRE_was3" {
+#   target_group_arn = aws_alb_target_group.SRE_was2.arn
+#   target_id        = aws_instance.SRE_was3.id
+#   port             = 8080
+# }
+# resource "aws_alb_target_group_attachment" "SRE_was4" {
+#   target_group_arn = aws_alb_target_group.SRE_was2.arn
+#   target_id        = aws_instance.SRE_was4.id
+#   port             = 8080
+# }
 
 #####################
 # Autoscaling group #
@@ -617,32 +643,32 @@ resource "aws_autoscaling_attachment" "asg_attachment_web" {
 }
 resource "aws_autoscaling_attachment" "asg_attachment_was1" {
   autoscaling_group_name = aws_autoscaling_group.asg_was1.id
-  alb_target_group_arn   = aws_alb_target_group.SRE_was1.arn
+  alb_target_group_arn   = aws_alb_target_group.SRE_was.arn
 }
 resource "aws_autoscaling_attachment" "asg_attachment_was2" {
   autoscaling_group_name = aws_autoscaling_group.asg_was2.id
-  alb_target_group_arn   = aws_alb_target_group.SRE_was2.arn
+  alb_target_group_arn   = aws_alb_target_group.SRE_was.arn
 }
 
 ########################
 # Launch configuration #
 ########################
 resource "aws_launch_configuration" "alc_web1" {
-  image_id=var.web_ami_id
+  image_id=var.image_id_web
   instance_type="t2.micro"
   lifecycle{
     create_before_destroy=true
   }
 }
 resource "aws_launch_configuration" "alc_was1" {
-  image_id=var.api_ami_id
+  image_id=var.image_id_was1
   instance_type="t2.micro"
   lifecycle{
     create_before_destroy=true
   }
 }
 resource "aws_launch_configuration" "alc_was2" {
-  image_id=var.ui_ami_id
+  image_id=var.image_id_was2
   instance_type="t2.micro"
   lifecycle{
     create_before_destroy=true
